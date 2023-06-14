@@ -174,12 +174,15 @@ static bool isDebuggable() {
 }
 
 static inline bool isTrebleTestingOverride() {
+    // return false early so we don't need to check the debuggable property
+    if (!*getTrebleTestingOverridePtr()) return false;
+
     if (kEnforceVintfManifest && !isDebuggable()) {
         // don't allow testing override in production
         return false;
     }
 
-    return *getTrebleTestingOverridePtr();
+    return true;
 }
 
 static void onRegistrationImpl(const std::string& descriptor, const std::string& instanceName) {
